@@ -1,12 +1,19 @@
 import { ScrollView, Text, StyleSheet } from "react-native";
 import React from "react";
 import { scrolls } from "../data/Scrolls";
+import { COLORS } from "../styles/Colors";
 
-export const Scroll = () => {
+type ScrollProps = {
+  theme: "light" | "dark";
+};
+
+export const Scroll = ({ theme }: ScrollProps) => {
+  const currentColors = theme === "dark" ? COLORS.dark : COLORS.light;
+
   return (
     <ScrollView style={styles.scrollContainer}>
       {scrolls.map((item, index) => (
-        <Text key={index} style={styles.itemText}>
+        <Text key={index} style={[styles.itemText, { color: currentColors.text, backgroundColor: currentColors.cardBackground }]}>
           {item}
         </Text>
       ))}
@@ -19,17 +26,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   itemText: {
-    borderColor: "black",
+    borderColor: COLORS.light.border,
     borderWidth: 1,
     borderStyle: "dashed",
     padding: 20,
-    color: "darkred",
+    color: COLORS.light.text,
     textAlign: "center",
     fontWeight: "bold",
     fontStyle: "italic",
     fontSize: 16,
-    backgroundColor: "silver",
+    backgroundColor: COLORS.light.cardBackground,
     marginVertical: 5,
   },
 });
- 

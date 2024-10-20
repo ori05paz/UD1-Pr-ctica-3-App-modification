@@ -6,24 +6,36 @@ import { Card } from "./components/Card";
 import { Scroll } from "./components/Scroll";
 import { cards } from "./data/Cards";
 import { Skills } from "./components/Skills";
+import { COLORS } from "./styles/Colors";
 
 export default function App() {
   const [displayMyQR, setDisplayMyQR] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const currentColors = isDarkTheme ? COLORS.dark : COLORS.light;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <Text style={styles.firstTopRow}>My Portfolio App</Text>
+    <View
+      style={[styles.container, { backgroundColor: currentColors.background }]}
+    >
+      <View
+        style={
+          styles.topContainer}
+      >
+        <Text style={[styles.firstTopRow, { color: currentColors.text, backgroundColor: currentColors.rowBackground }]}>
+          My Portfolio App
+        </Text>
         <View style={styles.buttonContainer}>
           <CustomButton
             onPress={() => setDisplayMyQR(true)}
             title="Mi Info"
-            customStyles={styles.shadoxboxing}
+            customStyles={{ backgroundColor: currentColors.buttonBackground }}
           />
+          <View style={styles.buttonSpacing} />
           <CustomButton
             onPress={() => setDisplayMyQR(false)}
             title="Mi Repo"
-            customStyles={styles.shadoxboxing}
+            customStyles={{ backgroundColor: currentColors.buttonBackground }}
           />
         </View>
       </View>
@@ -32,23 +44,26 @@ export default function App() {
       {displayMyQR ? (
         <View style={styles.bodyContainer}>
           {cards.map((card, index) => (
-            <Card 
+            <Card
               key={index}
-              title={card.title} 
-              body={card.body} 
-              imgSource={card.imgSource} 
+              title={card.title}
+              body={card.body}
+              imgSource={card.imgSource}
+              customStyles={{ backgroundColor: currentColors.cardBackground }}
             />
           ))}
           <ScrollView>
-          <Text style={styles.likesTitle}>Cosas que me gustan mucho:</Text>
-          <Scroll />
-          <Skills /> 
+            <Text style={[styles.likesTitle, { color: currentColors.text }]}>
+              Cosas que me gustan mucho:
+            </Text>
+            <Scroll theme={isDarkTheme ? "dark" : "light"} />
+            <Skills theme={isDarkTheme ? "dark" : "light"} />
           </ScrollView>
         </View>
       ) : (
         <View style={styles.bodyContainer}>
           <View style={styles.qrContainer}>
-            <QRCode value="https://github.com/adhernea" />
+            <QRCode value="https://github.com/ori05paz" />
           </View>
         </View>
       )}
@@ -62,14 +77,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 23,
   },
   topContainer: {
     height: "15%",
-    paddingTop: 50,
+    paddingTop: 37,
     width: "100%",
   },
   firstTopRow: {
-    backgroundColor: "gray",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
@@ -78,11 +93,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 4,
+  },
+  buttonSpacing: {
+    marginHorizontal: 15,
+  },
+  themeButtonContainer: {
+    marginTop: 30,
   },
   bodyContainer: {
     width: "100%",
     alignItems: "center",
+    justifyContent: "space-evenly",
     height: "85%",
+    marginTop: 1,
   },
   likesTitle: {
     color: "black",
@@ -97,7 +121,8 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
   },
-  shadoxboxing: {
+  shadowboxing: {
+    backgroundColor: COLORS.light.buttonBackground,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
