@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { CustomButton } from "./components/CustomButton";
 import { Card } from "./components/Card";
 import { Scroll } from "./components/Scroll";
 import { cards } from "./data/Cards";
+import { Skills } from "./components/Skills";
 
 export default function App() {
   const [displayMyQR, setDisplayMyQR] = useState(true);
@@ -27,6 +28,7 @@ export default function App() {
         </View>
       </View>
 
+
       {displayMyQR ? (
         <View style={styles.bodyContainer}>
           {cards.map((card, index) => (
@@ -37,8 +39,11 @@ export default function App() {
               imgSource={card.imgSource} 
             />
           ))}
+          <ScrollView>
           <Text style={styles.likesTitle}>Cosas que me gustan mucho:</Text>
           <Scroll />
+          <Skills /> 
+          </ScrollView>
         </View>
       ) : (
         <View style={styles.bodyContainer}>
