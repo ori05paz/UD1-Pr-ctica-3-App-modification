@@ -1,61 +1,80 @@
-import { useState } from 'react';
-import { Button, Pressable, ScrollView, StyleSheet, Text, View, Image } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import { useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import QRCode from "react-native-qrcode-svg";
+import { CustomButton } from "./components/CustomButton";
+import { Card } from "./components/Card";
+import { Scroll } from "./components/Scroll";
+import { cards } from "./data/Cards";
+import { Skills } from "./components/Skills";
+import { COLORS } from "./styles/Colors";
 
 export default function App() {
   const [displayMyQR, setDisplayMyQR] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const currentColors = isDarkTheme ? COLORS.dark : COLORS.light;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <Text style={styles.firsttoprowContainer}>My Portfolio App</Text>
-        <View style={styles.rowTopSecondContainer}>
-        <Pressable style={styles.buttonruta} onPress={() => setDisplayMyQR(true)}>
-          <Text style={{...{color: 'white', fontWeight: 'bold', textTransform: 'uppercase'}, ...styles.shadoxboxing}}>Mi info</Text>
-        </Pressable>
-        <Button onPress={() => setDisplayMyQR(false)} title="Mi Repo" color="light-gray" accessibilityLabel='Un botón pal QR' />
+    <View
+      style={[styles.container, { backgroundColor: currentColors.background }]}
+    >
+      <View
+        style={
+          styles.topContainer}
+      >
+        <Text style={[styles.firstTopRow, { color: currentColors.text, backgroundColor: currentColors.rowBackground }]}>
+          My Portfolio App
+        </Text>
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            onPress={() => setDisplayMyQR(true)}
+            title="Mi Info"
+            customStyles={{ backgroundColor: currentColors.buttonBackground }}
+          />
+          <View style={styles.buttonSpacing} />
+          <CustomButton
+            onPress={() => setDisplayMyQR(false)}
+            title="Mi Repo"
+            customStyles={{ backgroundColor: currentColors.buttonBackground }}
+          />
         </View>
       </View>
-      {
-        displayMyQR ?
-          <View style={styles.bodystails}>
-            <View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image style={styles.avatar} source={require('./assets/SofyanAmrabat.jpg')}></Image>
-              <View style={{margin: 10, backgroundColor: 'lightgray', padding: 10, borderRadius: 10, width: '70%'}}>
-            <Text style={{textAlign:'center', fontWeight: '700', fontSize: 20}}>
-            Descripción sobre mí!
+
+      <View style={styles.themeButtonContainer}>
+        <CustomButton
+          onPress={() => setIsDarkTheme(!isDarkTheme)} 
+          title={`Cambiar a tema ${isDarkTheme ? "Claro" : "Oscuro"}`} 
+          customStyles={{ backgroundColor: currentColors.buttonBackground }} 
+        />
+      </View>
+
+
+      {displayMyQR ? (
+        <View style={styles.bodyContainer}>
+          {cards.map((card, index) => (
+            <Card
+              key={index}
+              title={card.title}
+              body={card.body}
+              imgSource={card.imgSource}
+              customStyles={{ backgroundColor: currentColors.cardBackground }}
+            />
+          ))}
+          <ScrollView>
+            <Text style={[styles.likesTitle, { color: currentColors.text }]}>
+              Cosas que me gustan mucho:
             </Text>
-            <Text>
-              Soy profe y me gusta mi trabajo aunque a veces me de por enrevesar prácticas para mis queridos alumnos
-            </Text>
-              </View>
-              </View>
-            <Text style= {{color: 'beriblak', fontWeight: "900", textTransform: 'capitalize', fontSize: 20, textAlign: 'center'}}>
-              cosas que me gustan mucho:
-            </Text>
-            <ScrollView style={{padding: 10}}>
-              <Text style={styles.cosasQmeGustanMuxoEstails}>Salir a pasear</Text>
-          <Text style={styles.cosasQmeGustanMuxoEstails}>Senderismo</Text>
-            <Text style={styles.cosasQmeGustanMuxoEstails}>Ir a la playita</Text>
-            <Text style={styles.cosasQmeGustanMuxoEstails}>Domingos de misa</Text>
-              <Text style={styles.cosasQmeGustanMuxoEstails}>La guitarrita</Text>
-            <Text style={styles.cosasQmeGustanMuxoEstails}>El monte con lluvia</Text>
-              <Text style={styles.cosasQmeGustanMuxoEstails}>Viajar</Text>
-     <Text style={styles.cosasQmeGustanMuxoEstails}>Música variadita</Text>
-              <Text style={styles.cosasQmeGustanMuxoEstails}>Anime</Text>
-        <Text style={styles.cosasQmeGustanMuxoEstails}>Ducharme</Text>
-              <Text style={styles.cosasQmeGustanMuxoEstails}>Videojuegos</Text>
-      <Text style={styles.cosasQmeGustanMuxoEstails}>Ir de cenar romántica</Text>
-            </ScrollView>
-            </View>
+            <Scroll theme={isDarkTheme ? "dark" : "light"} />
+            <Skills theme={isDarkTheme ? "dark" : "light"} />
+          </ScrollView>
+        </View>
+      ) : (
+        <View style={styles.bodyContainer}>
+          <View style={styles.qrContainer}>
+            <QRCode value="https://github.com/ori05paz" />
           </View>
-          :
-              <View style={styles.bodystails}>
-            <View style={styles.CentrarcodigoQR}>
-          <QRCode value="https://github.com/adhernea" />
-            </View>
-              </View>
-      }
+        </View>
+      )}
     </View>
   );
 }
@@ -63,64 +82,55 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 23,
   },
   topContainer: {
-    height: '15%',
-    paddingTop: 50,
-    width: '100%',
+    height: "15%",
+    paddingTop: 37,
+    width: "100%",
   },
-  firsttoprowContainer: {
-    backgroundColor: 'gray',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    textAlignVertical: 'center',
+  firstTopRow: {
+    textAlign: "center",
+    fontWeight: "bold",
     fontSize: 30,
   },
-  rowTopSecondContainer: {
-    flexDirection: 'row',
-    backgroundColor: 'darkgray',
-    justifyContent: 'center',
-    alignItems: 'center'
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 4,
   },
-  buttonruta: {
-    width:'50%',
+  buttonSpacing: {
+    marginHorizontal: 15,
   },
-  bodystails: {
-    width: '100%',
-    borderWidth: 2,
-    borderColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: '85%'
+  themeButtonContainer: {
+    marginTop: 30,
   },
-  avatar: {
-    height: 90,
-    width: 90,
-    borderRadius: 100
+  bodyContainer: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    height: "85%",
+    marginTop: 1,
   },
-  cosasQmeGustanMuxoEstails: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    padding: 20,
-    color: 'darkred',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-    fontSize: 16,
-    backgroundColor: 'silver'
+  likesTitle: {
+    color: "black",
+    fontWeight: "900",
+    textTransform: "capitalize",
+    fontSize: 20,
+    textAlign: "center",
   },
-  CentrarcodigoQR: {
-    justifyContent: 'center',
-    borderWidth: 1,
-    width: '100%',
-    height: '100%',
-    alignItems: 'center'
+  qrContainer: {
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
   },
-  shadoxboxing: {
+  shadowboxing: {
+    backgroundColor: COLORS.light.buttonBackground,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -128,7 +138,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
-
     elevation: 15,
-  }
+  },
 });
