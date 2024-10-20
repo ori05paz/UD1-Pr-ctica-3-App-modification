@@ -40,6 +40,14 @@ export default function App() {
         </View>
       </View>
 
+      <View style={styles.themeButtonContainer}>
+        <CustomButton
+          onPress={() => setIsDarkTheme(!isDarkTheme)} 
+          title={`Cambiar a tema ${isDarkTheme ? "Claro" : "Oscuro"}`} 
+          customStyles={{ backgroundColor: currentColors.buttonBackground }} 
+        />
+      </View>
+
 
       {displayMyQR ? (
         <View style={styles.bodyContainer}>
