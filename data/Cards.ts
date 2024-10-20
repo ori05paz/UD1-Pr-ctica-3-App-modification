@@ -3,7 +3,7 @@ import { CardProps } from "../components/Card";
 export const cards: CardProps[] = [
   {
     title: "Descripción sobre mí",
-    body: "Soy profe y me gusta mi trabajo aunque a veces me de por enrevesar prácticas para mis queridos alumnos.",
+    body: "Soy estudiante de programación, me gusta la tecnología y el diseño. Disfruto trabajar en proyectos que me permitan expresar mi creatividad.",
     imgSource: require("../assets/SofyanAmrabat.jpg"),
   },
 ]

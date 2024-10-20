@@ -1,11 +1,9 @@
-
-export const scrolls: string[] = [ 
-    "Salir a pasear",
-    "Senderismo",
-    "Ir a la playita",
-    "Domingos de misa",
-    "La guitarrita",
-    "El monte con lluvia",
-    "Viajar",
-  ];
-  
+export const scrolls: string[] = [
+  "Caminar",
+  "Leer libros y comics",
+  "Senderismo",
+  "Aprender nuevas cosas",
+  "El voluntariado",
+  "Escuchar música",
+  "Ver documentales",
+];
